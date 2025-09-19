@@ -1,10 +1,13 @@
+
 import React from "react";
+import CalculoForm from "@/components/calculo-form";
 
 export default function calculoPage(){
     return(
     <main className="px-4 py-10">
-        <h1 className="text-3xl font-bold">Nuevo cálculo</h1>
-        <p className="opacity-80">Página lista para trabajar aquí.</p>
+        <div className="mt-6 rounded-lg border p-4">
+            <CalculoForm/>
+        </div>
     </main>
     );
 }
