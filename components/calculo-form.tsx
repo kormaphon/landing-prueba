@@ -4,12 +4,23 @@ import React, { useState } from "react";
 
 export default function CalculoForm(){
    
+
+    type Cotizacion = {
+        cliente: string;
+        productoNombre: string;
+        precio: number;
+        cantidad: number;
+        subtotal: number;
+    }
+
+
+
     const [nombreCompleto, setNombreCompleto] = useState("");
     const [productoId, setProductoId] = useState("");
     const [precio,setPrecio] = useState(0);
-    const [cantidad, setCantidad] = useState<number>(1)
+    const [cantidad, setCantidad] = useState<number>(1);
+    const [cotizacion, setCotizacion] = useState<Cotizacion | null> (null);
 
-    const subtotal = precio * cantidad;
 
     const productos = [
         { id: "compresor3hp", nombre: "Compresor de Aire 3HP" },
@@ -27,7 +38,19 @@ export default function CalculoForm(){
    
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        alert("Form send...");
+        
+        const prod = productos.find(p => p.id === productoId);
+        const productoNombre = prod  ? prod.nombre : "-";
+        const subtotal = precio * cantidad;
+        
+        setCotizacion({
+            cliente: nombreCompleto,
+            productoNombre,
+            precio,
+            cantidad,
+            subtotal,
+        });
+
     }
 
     return(
@@ -103,23 +126,28 @@ export default function CalculoForm(){
     </label>
 
 
-    <div className="block mt-4">
-        <span className="text-sm font-medium">Subtotal</span>
-            <input
-                type="number"
-                value={subtotal}
-                readOnly
-                className="mt-1 block w-full rounded border px-3 py-2 bg-gray-100"
-            />
-    </div>
-
-
        <button
          type="submit"
          className="mt-6 w-full rounded-lg bg-blue-600 px-4 py-2 text-white font-semibold shadow hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-1 transition"
         >
                 Generar cotización
         </button>
+
+        {cotizacion && (
+                <div className="mt-8 rounded-lg border bg-white p-6 shadow">
+                <h2 className="text-xl font-bold mb-4 text-blue-600">📄 Cotización</h2>
+
+                <p><span className="font-medium">Cliente:</span> {cotizacion.cliente}</p>
+                <p><span className="font-medium">Producto:</span> {cotizacion.productoNombre}</p>
+                <p><span className="font-medium">Precio unitario:</span> ${cotizacion.precio}</p>
+                <p><span className="font-medium">Cantidad:</span> {cotizacion.cantidad}</p>
+                <hr className="my-3" />
+                <p className="text-lg font-semibold text-green-600">
+                Subtotal: ${cotizacion.subtotal}
+                </p>
+         </div>
+)}
+
 
     </form>
     )
