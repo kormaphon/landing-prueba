@@ -1,11 +1,15 @@
 "use client";
 
-import React, { use, useState } from "react";
+import React, { useState } from "react";
 
 export default function CalculoForm(){
    
     const [nombreCompleto, setNombreCompleto] = useState("");
     const [productoId, setProductoId] = useState("");
+    const [precio,setPrecio] = useState(0);
+    const [cantidad, setCantidad] = useState<number>(1)
+
+    const subtotal = precio * cantidad;
 
     const productos = [
         { id: "compresor3hp", nombre: "Compresor de Aire 3HP" },
@@ -63,7 +67,60 @@ export default function CalculoForm(){
         </label>
 
 
-        <button type="submit">Send Data</button>
+        <label className="block">
+            <span className="text-sm font-medium">Precio del producto:</span>   
+            <input 
+                type="number" 
+                id="precio" 
+                name="precio" 
+                value={precio}
+                onChange={(e) => setPrecio(Number(e.target.value))}
+                placeholder="Juan Peréz"
+                autoComplete="name"
+                className="mt-1 block w-full rounded border px-3 py-2"
+                min="0"
+                required 
+            />
+        </label>
+
+    
+    <label className="block mt-4">
+        <span className="text-sm font-medium">Cantidad</span>
+        <input 
+            type="number"
+            id="cantidad"
+            name="cantidad"
+            value={cantidad === 0 ? "" : cantidad}
+            onChange={(e:React.ChangeEvent<HTMLInputElement>) =>
+                setCantidad(e.target.value === "" ? 0 : Math.floor(Number(e.target.value)))
+            }
+             min="1"
+             step="1"
+             placeholder="1"
+             className="mt-1 block w-full rounded border px-3 py-2"
+             required
+        />     
+    </label>
+
+
+    <div className="block mt-4">
+        <span className="text-sm font-medium">Subtotal</span>
+            <input
+                type="number"
+                value={subtotal}
+                readOnly
+                className="mt-1 block w-full rounded border px-3 py-2 bg-gray-100"
+            />
+    </div>
+
+
+       <button
+         type="submit"
+         className="mt-6 w-full rounded-lg bg-blue-600 px-4 py-2 text-white font-semibold shadow hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-1 transition"
+        >
+                Generar cotización
+        </button>
+
     </form>
     )
 }
