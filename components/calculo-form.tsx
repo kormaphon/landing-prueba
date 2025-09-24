@@ -5,6 +5,13 @@ import React, { useState } from "react";
 export default function CalculoForm(){
    
 
+    interface FormErrors{
+        cliente?: string,
+        producto?: string,
+        precio?: string,
+        cantidad?: string
+    }
+
     type Cotizacion = {
         cliente: string;
         productoNombre: string;
@@ -14,12 +21,13 @@ export default function CalculoForm(){
     }
 
 
-
     const [nombreCompleto, setNombreCompleto] = useState("");
     const [productoId, setProductoId] = useState("");
     const [precio,setPrecio] = useState(0);
     const [cantidad, setCantidad] = useState<number>(1);
     const [cotizacion, setCotizacion] = useState<Cotizacion | null> (null);
+    const [errors, SetErrors] = useState<FormErrors>({});
+    
 
 
     const productos = [
@@ -53,8 +61,12 @@ export default function CalculoForm(){
 
     }
 
+
+    //validaciones
+
+
     return(
-        
+
     <form onSubmit={handleSubmit}>
         <label className="block">
             <span className="text-sm font-medium">Nombres completos del Cliente</span>   
