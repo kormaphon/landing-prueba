@@ -51,14 +51,14 @@ export default function CalculoForm(){
         const productoNombre = prod  ? prod.nombre : "-";
         const subtotal = precio * cantidad;
         
-        /*
+        
         setCotizacion({
             cliente: nombreCompleto,
             productoNombre,
             precio,
             cantidad,
             subtotal,
-        });*/
+        })
 
     }
 
