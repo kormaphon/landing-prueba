@@ -20,16 +20,7 @@ export default function CalculoForm(){
         subtotal: number;
     }
 
-
-    const [nombreCompleto, setNombreCompleto] = useState("");
-    const [productoId, setProductoId] = useState("");
-    const [precio,setPrecio] = useState(0);
-    const [cantidad, setCantidad] = useState<number>(1);
-    const [cotizacion, setCotizacion] = useState<Cotizacion | null> (null);
-    const [errors, SetErrors] = useState<FormErrors>({});
     
-
-
     const productos = [
         { id: "compresor3hp", nombre: "Compresor de Aire 3HP" },
         { id: "bomba2pulg", nombre: "Bomba Centrífuga 2\"" },
@@ -43,27 +34,33 @@ export default function CalculoForm(){
         { id: "caldera50l", nombre: "Caldera 50L" },
     ];
 
-   
-    const handleSubmit = (e: React.FormEvent) => {
+
+
+    const [nombreCompleto, setNombreCompleto] = useState("");
+    const [productoId, setProductoId] = useState("");
+    const [precio,setPrecio] = useState<string>("");
+    const [cantidad, setCantidad] = useState<number>(1);
+    const [cotizacion, setCotizacion] = useState<Cotizacion | null> (null);
+    const [errors, SetErrors] = useState<FormErrors>({});
+    
+
+
+     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        
-        const prod = productos.find(p => p.id === productoId);
-        const productoNombre = prod  ? prod.nombre : "-";
-        const subtotal = precio * cantidad;
-        
-        
+        const precioNum = parseFloat(precio.replace(",",".")) || 0;
+        const pro = productos.find(p => p.id === productoId);
+        const productoNombre = pro ? pro.nombre : "-";
+        const subtotal = precioNum * cantidad;
+
         setCotizacion({
             cliente: nombreCompleto,
             productoNombre,
-            precio,
+            precio: precioNum,
             cantidad,
-            subtotal,
-        })
-
+            subtotal
+        });
     }
 
-
-    //validaciones
 
 
     return(
@@ -104,13 +101,13 @@ export default function CalculoForm(){
 
 
         <label className="block">
-            <span className="text-sm font-medium">Precio del producto:</span>   
+            <span className="block mt-4">Precio del producto:</span>   
             <input 
                 type="number" 
                 id="precio" 
                 name="precio" 
                 value={precio}
-                onChange={(e) => setPrecio(Number(e.target.value))}
+                onChange={(e) => setPrecio((e.target.value))}
                 placeholder="Juan Peréz"
                 autoComplete="name"
                 className="mt-1 block w-full rounded border px-3 py-2"
@@ -165,3 +162,7 @@ export default function CalculoForm(){
     </form>
     )
 }
+
+
+   
+   
